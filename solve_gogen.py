@@ -56,18 +56,18 @@ class Gogen(object):
             big_or = []
             for i in range(5):
                 for j in range(5):
-                    adjacent_cells_condition = [
-                        cells[(i+k, j+l)] == ord(b)
-                        for k in [-1,0,1] for l in [-1,0,1]
-                        if
-                            (0 <= (i+k) <= 4)
-                            and (0 <= (j+l) <= 4)
-                            and (not ((k == 0) and (l == 0)))
-                            # small optimisation to help the solver
-                            and (self.board[i+k][j+l] == '?' or self.board[i+k][j+l] == b)
-                    ]
                     # small optimisation to help the solver
                     if self.board[i][j] == '?' or self.board[i][j] == a:
+                        adjacent_cells_condition = [
+                            cells[(i+k, j+l)] == ord(b)
+                            for k in [-1,0,1] for l in [-1,0,1]
+                            if
+                                (0 <= (i+k) <= 4)
+                                and (0 <= (j+l) <= 4)
+                                and (not ((k == 0) and (l == 0)))
+                                # small optimisation to help the solver
+                                and (self.board[i+k][j+l] == '?' or self.board[i+k][j+l] == b)
+                        ]
                         big_or.append(z3.And(cells[(i,j)] == ord(a), z3.Or(*adjacent_cells_condition)))
             s.add(z3.Or(*big_or))
 
